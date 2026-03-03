@@ -3,6 +3,7 @@ import { Schibsted_Grotesk, Martian_Mono } from "next/font/google";
 import "./globals.css";
 import LightRays from "@/components/LightRays";
 import Navbar from "@/components/Navbar";
+import { PostHogProvider } from "./providers";
 
 //main entry point of the app, all pages will be wrapped in this layout component, used to set up global styles and fonts
 const schibstedGrotesk = Schibsted_Grotesk({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${schibstedGrotesk.variable} ${martianMono.variable} min-h-screen antialiased`}
       >
+        <PostHogProvider>
         <Navbar />
 
         <div className="absolute inset-0 top-0 z-[-10] min-h-screen">
@@ -49,6 +51,7 @@ export default function RootLayout({
 
           {children}
         </main>
+        </PostHogProvider>
       </body>
     </html>
   );

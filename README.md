@@ -154,3 +154,34 @@ cachetag: what to clear
 revalidate(): clear
 partial pre rendering: cache comp 
 
+
+## mongo db
+cluster: DB
+
+## data modelling
+main entityin app
+dev events: event
+what defines an event?
+title
+desc
+date/time
+image
+location
+how is it happening?online/offline
+who is it for
+whats gonnahappen
+whos organizing it
+tags
+seo friendly: slug
+
+hwo the suers interact with this event
+second entity 
+booking
+which event? event id
+who booked? email
+when the booking? automatc timestamps
+relations
+one to many (1 event to many booking)
+
+what should the data do
+backend arch
