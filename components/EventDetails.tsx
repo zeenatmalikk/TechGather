@@ -2,6 +2,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import BookEvent from './BookEvent';
+import { IEvent } from '@/database';
+import { getSimilarEventsBySlug } from '@/lib/actions/event.actions';
+import EventCard from './EventCard';
 
 const EventDetailItem = ({ icon, alt, label }: { icon: string; alt: string; label: string; }) => (
     <div className="flex-row-gap-2 items-center">
@@ -28,14 +31,17 @@ const EventTags = ({ tags }: { tags: string[] }) => (
     </div>
 )
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
-const bookings = 10; // This should ideally come from the API, hardcoded for now
 const EventDetails = async ({ params }: { params: Promise<string> }) => {
-    const  slug  = await params
+    const slug = await params
     const response = await fetch(`${BASE_URL}/api/events/${slug}`)
     const { event } = await response.json()
     const { description, image, overview, date, time, location, mode, agenda, audience, tags, organizer } = event;
 
     if (!description) return notFound();
+    const bookings = 10; // This should ideally come from the API, hardcoded for now
+
+    const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug); // This should also come from the API based on the current event's tags or category, hardcoded for now
+
     return (
         <div>
             <section id="event">
@@ -64,14 +70,14 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
                             <EventDetailItem icon="/icons/audience.svg" alt="audience" label={audience} />
                         </section>
 
-                        <EventAgenda agendaItems={JSON.parse(agenda[0])} />
+                        <EventAgenda agendaItems={agenda} />
 
                         <section className="flex-col-gap-2">
                             <h2>About the Organizer</h2>
                             <p>{organizer}</p>
                         </section>
 
-                        {/* <EventTags tags={JSON.parse(tags[0])} /> */}
+                        <EventTags tags={tags} />
                     </div>
 
                     {/*    Right Side - Booking Form */}
@@ -91,14 +97,14 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
                     </aside>
                 </div>
 
-                {/* <div className="flex w-full flex-col gap-4 pt-20">
+                <div className="flex w-full flex-col gap-4 pt-20">
                     <h2>Similar Events</h2>
                     <div className="events">
                         {similarEvents.length > 0 && similarEvents.map((similarEvent: IEvent) => (
                             <EventCard key={similarEvent.title} {...similarEvent} />
                         ))}
                     </div>
-                </div> */}
+                </div>
             </section>
         </div>
     )
