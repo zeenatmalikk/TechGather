@@ -185,3 +185,6 @@ one to many (1 event to many booking)
 
 what should the data do
 backend arch
+
+//use cache will cache results at build time or runtime
+//cacheComponents 
