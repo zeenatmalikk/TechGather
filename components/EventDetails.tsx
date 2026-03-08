@@ -5,6 +5,7 @@ import BookEvent from './BookEvent';
 import { IEvent } from '@/database';
 import { getSimilarEventsBySlug } from '@/lib/actions/event.actions';
 import EventCard from './EventCard';
+import { cacheLife } from 'next/cache';
 
 const EventDetailItem = ({ icon, alt, label }: { icon: string; alt: string; label: string; }) => (
     <div className="flex-row-gap-2 items-center">
@@ -32,6 +33,8 @@ const EventTags = ({ tags }: { tags: string[] }) => (
 )
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const EventDetails = async ({ params }: { params: Promise<string> }) => {
+    'use cache'
+    cacheLife('hours') // Cache the result of this function for 1 hour, so that if there are multiple requests to the same event page within 1 hour, it will serve the cached version instead of fetching the event details from the API again, improving performance and reducing load on the server.
     const slug = await params
     const response = await fetch(`${BASE_URL}/api/events/${slug}`)
     const { event } = await response.json()
