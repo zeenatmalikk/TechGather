@@ -4,7 +4,7 @@ import "./globals.css";
 import LightRays from "@/components/LightRays";
 import Navbar from "@/components/Navbar";
 import { PostHogProvider } from "./providers";
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
 //main entry point of the app, all pages will be wrapped in this layout component, used to set up global styles and fonts
 const schibstedGrotesk = Schibsted_Grotesk({
   variable: "--font-geist-sans",
@@ -50,6 +50,7 @@ export default function RootLayout({
         <main>
 
           {children}
+          <SpeedInsights />
         </main>
         </PostHogProvider>
       </body>
