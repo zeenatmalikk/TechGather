@@ -1,15 +1,17 @@
 import EventCard from '@/components/EventCard'
 import ExploreBtn from '@/components/ExploreBtn'
 import { IEvent } from '@/database'
+import events, { EventItem } from '@/lib/constants'
 import { cacheLife } from 'next/cache'
+
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const page = async () => {
   'use cache';
   cacheLife('hours') // Cache the result of this function for 60 seconds, so that if there are multiple requests to the homepage within 60 seconds, it will serve the cached version instead of fetching the events from the API again, improving performance and reducing load on the server.
   
-  const response = await fetch(`${BASE_URL}/api/events`)
-  const { events } = await response.json()
+  // const response = await fetch(`${BASE_URL}/api/events`)
+  // const { events } = await response.json()
   
   return (
     <section>
@@ -19,7 +21,7 @@ const page = async () => {
       <div className='mt-20 space-y-7'>
         <h3>Featured events</h3>
         <ul className="events" id="events">
-          {events && events.length > 0 && events.map((event: IEvent) => (
+          {events && events.length > 0 && events.map((event: EventItem) => (
             <li key={event.title} className="list-none">
               <EventCard {...event} />
             </li>
